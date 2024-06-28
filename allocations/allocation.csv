@@ -1,0 +1,6 @@
+Group ID,Hostel Name,Room Number,Members Allocated,Reason
+101,Boys hostel A,101,3,
+102,Girls Hostel B,202,4,
+103,Boys hostel A,102,2,
+104,Not allocated,Not allocated,5,Insufficient capacity in available rooms
+105,Not allocated,Not allocated,8,Insufficient capacity in rooms matching gender
