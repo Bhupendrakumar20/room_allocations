@@ -3,82 +3,802 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospitality Room Allocation</title>
+    <title>Smart Room Allocation System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        body, html {
-            height: 100%;
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: url('https://i2.wp.com/www10.aeccafe.com/blogs/arch-showcase/files/2018/02/BED_ONE_BLOCK_45A.jpg?ssl=1') no-repeat center center fixed;
-            background-size: cover;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .container {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            width: 50%;
-            margin: auto;
-            margin-top: 5%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+        :root {
+            --primary-color: #667eea;
+            --primary-dark: #5a67d8;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #48bb78;
+            --error-color: #f56565;
+            --warning-color: #ed8936;
+            --background: #f7fafc;
+            --card-background: #ffffff;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
-        h1 {
-            text-align: center;
-            color: #333;
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
         }
-        form {
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .navbar .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
         }
-        label {
-            font-weight: bold;
-            margin: 10px 0;
-            color: #555;
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        input[type="file"] {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin: 10px 0;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        a {
-            display: block;
+
+        .hero {
             text-align: center;
-            margin-top: 20px;
-            text-decoration: none;
-            color: #4CAF50;
-            font-weight: bold;
+            padding: 4rem 2rem;
+            color: white;
         }
-        a:hover {
-            color: #45a049;
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 4rem;
+        }
+
+        .card {
+            background: var(--card-background);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--card-background);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--background);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background: var(--border-color);
+            border-radius: 0.25rem;
+            overflow: hidden;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .alert-success {
+            background: rgba(72, 187, 120, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+        }
+
+        .alert-error {
+            background: rgba(245, 101, 101, 0.1);
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .results-table th {
+            background: var(--background);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid var(--border-color);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .footer {
+            background: var(--card-background);
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .main-container {
+                padding: 0 1rem 2rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--card-background);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Hospitality Room Allocation</h1>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <label for="group_file">Upload Your Group CSV file:</label>
-            <input type="file" name="group_file" id="group_file" required><br><br>
-            <label for="hostel_file">Upload Your Hostel CSV file:</label>
-            <input type="file" name="hostel_file" id="hostel_file" required><br><br>
-            <button type="submit"> Allocation Result </button>
-        </form>
-        <br>
-        <a href="/download">Download Allocation CSV</a>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                Smart Room Allocation
+            </div>
+            <div>
+                <a href="#about" class="btn btn-secondary">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Smart Room Allocation System</h1>
+        <p>Efficiently allocate hostel rooms based on group preferences, gender requirements, and capacity constraints using our intelligent algorithm.</p>
+    </section>
+
+    <div class="main-container">
+        <!-- Upload Section -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-upload"></i>
+                </div>
+                <div class="card-title">Upload Files</div>
+            </div>
+
+            <div class="alert alert-error" id="errorAlert"></div>
+            <div class="alert alert-success" id="successAlert"></div>
+
+            <form id="uploadForm" enctype="multipart/form-data">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Group Information CSV</label>
+                        <div class="upload-area" onclick="document.getElementById('groupFile').click()">
+                            <div class="upload-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <p><strong>Click to upload</strong> or drag and drop</p>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem;">CSV files only</p>
+                            <p id="groupFileName" style="margin-top: 0.5rem; color: var(--primary-color); font-weight: 600;"></p>
+                        </div>
+                        <input type="file" id="groupFile" name="group_file" accept=".csv" class="file-input" required>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Hostel Information CSV</label>
+                        <div class="upload-area" onclick="document.getElementById('hostelFile').click()">
+                            <div class="upload-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <p><strong>Click to upload</strong> or drag and drop</p>
+                            <p style="color: var(--text-secondary); font-size: 0.875rem;">CSV files only</p>
+                            <p id="hostelFileName" style="margin-top: 0.5rem; color: var(--primary-color); font-weight: 600;"></p>
+                        </div>
+                        <input type="file" id="hostelFile" name="hostel_file" accept=".csv" class="file-input" required>
+                    </div>
+                </div>
+
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="allocateBtn">
+                    <i class="fas fa-magic"></i>
+                    Allocate Rooms
+                </button>
+            </form>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 1rem;">Processing allocation...</p>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="card" id="resultsSection" style="display: none;">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="card-title">Allocation Results</div>
+                <div style="margin-left: auto;">
+                    <button class="btn btn-primary" id="downloadBtn" style="display: none;">
+                        <i class="fas fa-download"></i>
+                        Download CSV
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-grid" id="statsGrid">
+                <!-- Stats will be populated here -->
+            </div>
+
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="switchTab('allocated')">
+                    <i class="fas fa-check-circle"></i>
+                    Allocated Groups
+                </button>
+                <button class="tab-button" onclick="switchTab('unallocated')">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Unallocated Groups
+                </button>
+            </div>
+
+            <div id="allocatedTab" class="tab-content active">
+                <div style="overflow-x: auto;">
+                    <table class="results-table" id="allocatedTable">
+                        <thead>
+                            <tr>
+                                <th>Group ID</th>
+                                <th>Group Name</th>
+                                <th>Size</th>
+                                <th>Gender</th>
+                                <th>Room ID</th>
+                                <th>Room Name</th>
+                                <th>Floor</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allocatedTableBody">
+                            <!-- Allocated results will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="unallocatedTab" class="tab-content">
+                <div style="overflow-x: auto;">
+                    <table class="results-table" id="unallocatedTable">
+                        <thead>
+                            <tr>
+                                <th>Group ID</th>
+                                <th>Group Name</th>
+                                <th>Size</th>
+                                <th>Gender</th>
+                                <th>Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody id="unallocatedTableBody">
+                            <!-- Unallocated results will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions Section -->
+        <div class="card" id="about">
+            <div class="card-header">
+                <div class="card-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="card-title">How to Use</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Group Information CSV Format</h3>
+                    <p style="margin-bottom: 1rem;">Your group CSV should contain the following columns:</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+                            <strong>group_id:</strong> Unique identifier for each group
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+                            <strong>group_name:</strong> Name of the group
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+                            <strong>gender:</strong> male, female, or mixed
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+                            <strong>size:</strong> Number of people in the group
+                        </li>
+                        <li style="padding: 0.5rem 0;">
+                            <strong>preferences:</strong> (Optional) Special preferences
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Hostel Information CSV Format</h3>
+                    <p style="margin-bottom: 1rem;">Your hostel CSV should contain the following columns:</p>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+                            <strong>room_id:</strong> Unique identifier for each room
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+                            <strong>room_name:</strong> Name/number of the room
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+                            <strong>capacity:</strong> Maximum occupancy
+                        </li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">
+                            <strong>gender_type:</strong> male, female, or mixed
+                        </li>
+                        <li style="padding: 0.5rem 0;">
+                            <strong>floor:</strong> Floor number
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(102, 126, 234, 0.05); border-radius: 0.5rem; border-left: 4px solid var(--primary-color);">
+                <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">
+                    <i class="fas fa-lightbulb"></i> Algorithm Features
+                </h4>
+                <ul style="margin: 0; padding-left: 1.5rem;">
+                    <li>Intelligent room allocation based on group size and gender requirements</li>
+                    <li>Optimal room utilization to minimize waste</li>
+                    <li>Support for mixed-gender groups and rooms</li>
+                    <li>Detailed statistics and reporting</li>
+                    <li>Export results for further processing</li>
+                </ul>
+            </div>
+        </div>
     </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Smart Room Allocation System. Built with modern web technologies.</p>
+    </footer>
+
+    <script>
+        // Global variables
+        let allocationResults = null;
+
+        // File upload handling
+        document.getElementById('groupFile').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : '';
+            document.getElementById('groupFileName').textContent = fileName;
+        });
+
+        document.getElementById('hostelFile').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : '';
+            document.getElementById('hostelFileName').textContent = fileName;
+        });
+
+        // Drag and drop functionality
+        function setupDragAndDrop(uploadArea, fileInput) {
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+
+            uploadArea.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+            });
+
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0 && files[0].type === 'text/csv') {
+                    fileInput.files = files;
+                    fileInput.dispatchEvent(new Event('change'));
+                }
+            });
+        }
+
+        // Setup drag and drop for both upload areas
+        setupDragAndDrop(document.querySelector('[onclick="document.getElementById(\'groupFile\').click()"]'), document.getElementById('groupFile'));
+        setupDragAndDrop(document.querySelector('[onclick="document.getElementById(\'hostelFile\').click()"]'), document.getElementById('hostelFile'));
+
+        // Form submission
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const groupFile = document.getElementById('groupFile').files[0];
+            const hostelFile = document.getElementById('hostelFile').files[0];
+            
+            if (!groupFile || !hostelFile) {
+                showAlert('Please select both CSV files.', 'error');
+                return;
+            }
+            
+            formData.append('group_file', groupFile);
+            formData.append('hostel_file', hostelFile);
+            
+            // Show loading state
+            showLoading(true);
+            hideAlert();
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    allocationResults = result;
+                    displayResults(result);
+                    showAlert('Room allocation completed successfully!', 'success');
+                } else {
+                    showAlert(result.error || 'An error occurred during allocation.', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Network error. Please try again.', 'error');
+            } finally {
+                showLoading(false);
+            }
+        });
+
+        // Display results
+        function displayResults(results) {
+            document.getElementById('resultsSection').style.display = 'block';
+            
+            // Display statistics
+            displayStats(results.stats);
+            
+            // Display allocated groups
+            displayAllocatedGroups(results.allocations);
+            
+            // Display unallocated groups
+            displayUnallocatedGroups(results.unallocated);
+            
+            // Setup download button
+            if (results.download_url) {
+                const downloadBtn = document.getElementById('downloadBtn');
+                downloadBtn.style.display = 'inline-flex';
+                downloadBtn.onclick = () => window.open(results.download_url, '_blank');
+            }
+            
+            // Scroll to results
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Display statistics
+        function displayStats(stats) {
+            const statsGrid = document.getElementById('statsGrid');
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <span class="stat-number">${stats.allocated_groups}</span>
+                    <div class="stat-label">Allocated Groups</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">${stats.allocation_rate}%</span>
+                    <div class="stat-label">Success Rate</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">${stats.used_rooms}</span>
+                    <div class="stat-label">Rooms Used</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">${stats.capacity_utilization}%</span>
+                    <div class="stat-label">Capacity Used</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">${stats.allocated_people}</span>
+                    <div class="stat-label">People Allocated</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">${stats.unallocated_groups}</span>
+                    <div class="stat-label">Unallocated Groups</div>
+                </div>
+            `;
+        }
+
+        // Display allocated groups
+        function displayAllocatedGroups(allocations) {
+            const tbody = document.getElementById('allocatedTableBody');
+            tbody.innerHTML = allocations.map(alloc => `
+                <tr>
+                    <td>${alloc.group_id}</td>
+                    <td>${alloc.group_name}</td>
+                    <td>${alloc.group_size}</td>
+                    <td><span style="text-transform: capitalize;">${alloc.group_gender}</span></td>
+                    <td>${alloc.room_id}</td>
+                    <td>${alloc.room_name}</td>
+                    <td>Floor ${alloc.floor}</td>
+                    <td><span style="color: var(--success-color); font-weight: 600;">✓ Allocated</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // Display unallocated groups
+        function displayUnallocatedGroups(unallocated) {
+            const tbody = document.getElementById('unallocatedTableBody');
+            if (unallocated.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--success-color);">All groups were successfully allocated!</td></tr>';
+            } else {
+                tbody.innerHTML = unallocated.map(group => `
+                    <tr>
+                        <td>${group.group_id}</td>
+                        <td>${group.group_name}</td>
+                        <td>${group.size}</td>
+                        <td><span style="text-transform: capitalize;">${group.gender}</span></td>
+                        <td><span style="color: var(--error-color);">${group.reason}</span></td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Update button states
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update content visibility
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        // Utility functions
+        function showAlert(message, type) {
+            hideAlert();
+            const alert = document.getElementById(type === 'error' ? 'errorAlert' : 'successAlert');
+            alert.textContent = message;
+            alert.style.display = 'block';
+        }
+
+        function hideAlert() {
+            document.getElementById('errorAlert').style.display = 'none';
+            document.getElementById('successAlert').style.display = 'none';
+        }
+
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+            document.getElementById('allocateBtn').disabled = show;
+            document.getElementById('uploadForm').style.display = show ? 'none' : 'block';
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

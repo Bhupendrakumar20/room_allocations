@@ -1,4 +1,4 @@
-﻿room_id,room_name,capacity,gender_type,floor,amenities,room_type
+room_id,room_name,capacity,gender_type,floor,amenities,room_type
 R101,Room 101,4,male,1,WiFi;AC;Study Table,Standard
 R102,Room 102,3,female,1,WiFi;AC;Study Table,Standard
 R103,Room 103,6,mixed,1,WiFi;AC;Study Table;Kitchenette,Deluxe

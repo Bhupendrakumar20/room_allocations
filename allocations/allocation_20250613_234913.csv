@@ -1,0 +1,16 @@
+allocation_id,group_id,group_name,group_size,group_gender,room_id,room_name,room_capacity,room_gender_type,floor,allocated_at
+0d42f08e-fcce-48bf-9be2-cb3040cfd0f3,G003,Mixed Sports Team,6,mixed,R103,Room 103,6,mixed,1,2025-06-13T23:49:13.239364
+36761733-aff8-4c37-bdc6-14a098d7bf44,G014,Dance Troupe,6,female,R205,Room 205,6,mixed,2,2025-06-13T23:49:13.244587
+f1eaae67-5b2c-44a1-8624-42179bd6a6c5,G005,Coding Bootcamp,5,male,R105,Room 105,5,male,1,2025-06-13T23:49:13.251527
+c453f060-e7b3-447a-a596-9d9aabc41017,G009,Drama Club,5,mixed,R301,Room 301,5,female,3,2025-06-13T23:49:13.257288
+90e76a59-f6a6-43d3-b417-b13e3214ca56,G015,Robotics Team,5,mixed,R403,Room 403,5,mixed,4,2025-06-13T23:49:13.260976
+051871e2-cacb-49e4-aef7-d3ad3bef49d4,G006,Literature Society,4,mixed,R101,Room 101,4,male,1,2025-06-13T23:49:13.264344
+a82b9de3-f1e8-465a-ad39-9e756d0d641f,G001,Tech Enthusiasts,4,male,R201,Room 201,4,mixed,2,2025-06-13T23:49:13.267104
+cdaeb2dc-db51-42e4-8328-3b9536d20762,G012,Environmental Club,4,mixed,R203,Room 203,4,female,2,2025-06-13T23:49:13.270237
+d9cfd8a7-1528-4898-b65d-24b6850dde80,G008,Science Club,4,female,R405,Room 405,4,female,4,2025-06-13T23:49:13.273900
+73f13cc2-937c-42c0-a93f-9dc62dec15d6,G002,Study Group Alpha,3,female,R102,Room 102,3,female,1,2025-06-13T23:49:13.278187
+042845ab-071a-43f4-afbc-d87eb40faf1a,G007,Music Band,3,male,R202,Room 202,3,male,2,2025-06-13T23:49:13.284200
+92450a59-80f5-4f0a-bc3f-39f821fec39f,G011,Debate Team,3,female,R302,Room 302,3,mixed,3,2025-06-13T23:49:13.288812
+6382e822-36ef-4969-b5aa-9ccb8f653812,G004,Art Club,2,female,R104,Room 104,2,female,1,2025-06-13T23:49:13.291993
+770f538e-6c4a-4b2a-8713-96cbf5977b45,G010,Photography Group,2,male,R204,Room 204,2,male,2,2025-06-13T23:49:13.295819
+6d794bd5-a33b-4131-88e6-c1e2db008071,G013,Chess Club,2,male,R404,Room 404,2,male,4,2025-06-13T23:49:13.298370
