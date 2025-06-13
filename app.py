@@ -303,3 +303,8 @@ def internal_error(e):
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
+
+# Before saving the allocation_df to CSV, ensure the directory exists
+if not os.path.exists('allocations'):
+    os.makedirs('allocations')
+allocation_df.to_csv('allocations/allocation.csv', index=False)
